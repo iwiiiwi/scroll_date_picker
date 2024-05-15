@@ -5,6 +5,9 @@ class DatePickerScrollViewOptions {
     this.year = const ScrollViewDetailOptions(margin: EdgeInsets.all(4)),
     this.month = const ScrollViewDetailOptions(margin: EdgeInsets.all(4)),
     this.day = const ScrollViewDetailOptions(margin: EdgeInsets.all(4)),
+    this.hour = const ScrollViewDetailOptions(margin: EdgeInsets.only(left: 30,right: 4)),
+    this.minute = const ScrollViewDetailOptions(margin: EdgeInsets.all(4)),
+    this.second = const ScrollViewDetailOptions(margin: EdgeInsets.all(4)),
     this.mainAxisAlignment = MainAxisAlignment.center,
     this.crossAxisAlignment = CrossAxisAlignment.center,
   });
@@ -12,6 +15,9 @@ class DatePickerScrollViewOptions {
   final ScrollViewDetailOptions year;
   final ScrollViewDetailOptions month;
   final ScrollViewDetailOptions day;
+  final ScrollViewDetailOptions hour;
+  final ScrollViewDetailOptions minute;
+  final ScrollViewDetailOptions second;
   final MainAxisAlignment mainAxisAlignment;
   final CrossAxisAlignment crossAxisAlignment;
 

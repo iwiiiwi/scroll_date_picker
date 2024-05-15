@@ -199,6 +199,12 @@ class _ScrollDataPickerState extends State<ScrollDataPicker> {
           case DatePickerViewType.day:
             viewList.add(_dayScrollView);
             break;
+          case DatePickerViewType.hour:
+            // TODO: Handle this case.
+          case DatePickerViewType.minute:
+            // TODO: Handle this case.
+          case DatePickerViewType.second:
+            // TODO: Handle this case.
         }
       }
 

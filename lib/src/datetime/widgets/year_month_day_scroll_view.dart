@@ -1,13 +1,17 @@
+
+
+
 import 'dart:math';
 
-import 'package:flutter/material.dart';
-import 'package:scroll_date_picker/scroll_date_picker.dart';
-import 'package:scroll_date_picker/src/widgets/date_scroll_view.dart';
+import 'package:flutter/cupertino.dart';
 
-import 'utils/get_monthly_date.dart';
+import '../../../scroll_date_picker.dart';
+import '../../utils/get_monthly_date.dart';
+import '../../widgets/date_scroll_view.dart';
+import '../scroll_datetime_picker.dart';
 
-class ScrollDatePicker extends StatefulWidget {
-  ScrollDatePicker({
+class YearMonthDayScrollView extends StatefulWidget{
+  YearMonthDayScrollView({
     Key? key,
     this.viewType,
     required this.selectedDate,
@@ -17,7 +21,6 @@ class ScrollDatePicker extends StatefulWidget {
     Locale? locale,
     DatePickerOptions? options,
     DatePickerScrollViewOptions? scrollViewOptions,
-    this.indicator,
   })  : minimumDate = minimumDate ?? DateTime(1960, 1, 1),
         maximumDate = maximumDate ?? DateTime.now(),
         locale = locale ?? const Locale('en'),
@@ -52,15 +55,12 @@ class ScrollDatePicker extends StatefulWidget {
 
   /// A set that allows you to specify options related to ScrollView.
   final DatePickerScrollViewOptions scrollViewOptions;
-
-  /// Indicator displayed in the center of the ScrollDatePicker
-  final Widget? indicator;
-
   @override
-  State<ScrollDatePicker> createState() => _ScrollDatePickerState();
+  State<YearMonthDayScrollView> createState() => _YearMonthDayScrollViewState();
 }
 
-class _ScrollDatePickerState extends State<ScrollDatePicker> {
+class _YearMonthDayScrollViewState extends State<YearMonthDayScrollView> {
+  /// A set that allows you to specify options related to ScrollView.
   /// This widget's year selection and animation state.
   late FixedExtentScrollController _yearController;
 
@@ -71,14 +71,21 @@ class _ScrollDatePickerState extends State<ScrollDatePicker> {
   late FixedExtentScrollController _dayController;
 
   late Widget _yearScrollView;
+
   late Widget _monthScrollView;
+
   late Widget _dayScrollView;
 
   late DateTime _selectedDate;
+
   bool isYearScrollable = true;
+
   bool isMonthScrollable = true;
+
   List<int> _years = [];
+
   List<int> _months = [];
+
   List<int> _days = [];
 
   int get selectedYearIndex => !_years.contains(_selectedDate.year)
@@ -120,7 +127,7 @@ class _ScrollDatePickerState extends State<ScrollDatePicker> {
   void initState() {
     super.initState();
     _selectedDate = widget.selectedDate.isAfter(widget.maximumDate) ||
-            widget.selectedDate.isBefore(widget.minimumDate)
+        widget.selectedDate.isBefore(widget.minimumDate)
         ? DateTime.now()
         : widget.selectedDate;
 
@@ -137,21 +144,21 @@ class _ScrollDatePickerState extends State<ScrollDatePicker> {
   }
 
   @override
-  void didUpdateWidget(covariant ScrollDatePicker oldWidget) {
+  void didUpdateWidget(covariant YearMonthDayScrollView oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (_selectedDate != widget.selectedDate) {
-      _selectedDate = widget.selectedDate;
-      isYearScrollable = false;
-      isMonthScrollable = false;
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _yearController.animateToItem(selectedYearIndex,
-            curve: Curves.ease, duration: const Duration(microseconds: 500));
-        _monthController.animateToItem(selectedMonthIndex,
-            curve: Curves.ease, duration: const Duration(microseconds: 500));
-        _dayController.animateToItem(selectedDayIndex,
-            curve: Curves.ease, duration: const Duration(microseconds: 500));
-      });
-    }
+    // if (_selectedDate != widget.selectedDate) {
+    //   _selectedDate = widget.selectedDate;
+    //   isYearScrollable = false;
+    //   isMonthScrollable = false;
+    //   WidgetsBinding.instance.addPostFrameCallback((_) {
+    //     _yearController.animateToItem(selectedYearIndex,
+    //         curve: Curves.ease, duration: const Duration(microseconds: 500));
+    //     _monthController.animateToItem(selectedMonthIndex,
+    //         curve: Curves.ease, duration: const Duration(microseconds: 500));
+    //     _dayController.animateToItem(selectedDayIndex,
+    //         curve: Curves.ease, duration: const Duration(microseconds: 500));
+    //   });
+    // }
   }
 
   @override
@@ -163,6 +170,7 @@ class _ScrollDatePickerState extends State<ScrollDatePicker> {
   }
 
   void _initDateScrollView() {
+
     _yearScrollView = DateScrollView(
         key: const Key("year"),
         dates: _years,
@@ -221,8 +229,8 @@ class _ScrollDatePickerState extends State<ScrollDatePicker> {
         _selectedDate.year == widget.minimumDate.year) {
       _months = [
         for (int i = widget.minimumDate.month;
-            i <= widget.maximumDate.month;
-            i++)
+        i <= widget.maximumDate.month;
+        i++)
           i
       ];
     } else if (_selectedDate.year == widget.maximumDate.year) {
@@ -236,7 +244,7 @@ class _ScrollDatePickerState extends State<ScrollDatePicker> {
 
   void _initDays() {
     int _maximumDay =
-        getMonthlyDate(year: _selectedDate.year, month: _selectedDate.month);
+    getMonthlyDate(year: _selectedDate.year, month: _selectedDate.month);
     _days = [for (int i = 1; i <= _maximumDay; i++) i];
     if (_selectedDate.year == widget.maximumDate.year &&
         _selectedDate.month == widget.maximumDate.month &&
@@ -312,59 +320,10 @@ class _ScrollDatePickerState extends State<ScrollDatePicker> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        Row(
-          mainAxisAlignment: widget.scrollViewOptions.mainAxisAlignment,
-          crossAxisAlignment: widget.scrollViewOptions.crossAxisAlignment,
-          children: _getScrollDatePicker(),
-        ),
-        // Date Picker Indicator
-        IgnorePointer(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        widget.options.backgroundColor,
-                        widget.options.backgroundColor.withOpacity(0.7),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              widget.indicator ??
-                  Container(
-                    height: widget.options.itemExtent,
-                    decoration: BoxDecoration(
-                      color: Colors.grey.withOpacity(0.15),
-                      borderRadius: const BorderRadius.all(Radius.circular(4)),
-                    ),
-                  ),
-              Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        widget.options.backgroundColor.withOpacity(0.7),
-                        widget.options.backgroundColor,
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
+    List<Widget> children=_getScrollDatePicker();
+    return  Row(
+      mainAxisSize: MainAxisSize.min,
+      children: children,
     );
   }
 }

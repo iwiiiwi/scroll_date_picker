@@ -49,16 +49,35 @@ class _MyAppState extends State<MyApp> {
           ),
           SizedBox(
             height: 250,
-            child: ScrollDatePicker(
+            child: ScrollDateTimePicker(
               selectedDate: _selectedDate,
-              locale: Locale('en'),
+              viewType: [DatePickerViewType.year,DatePickerViewType.month,DatePickerViewType.day,DatePickerViewType.hour,DatePickerViewType.minute,DatePickerViewType.second],
+              locale: Locale('zh'),
               onDateTimeChanged: (DateTime value) {
                 setState(() {
                   _selectedDate = value;
                 });
               },
+              scrollViewOptions: DatePickerScrollViewOptions(
+                year: ScrollViewDetailOptions(
+
+                )
+              ),
             ),
           ),
+          // SizedBox(
+          //   height: 250,
+          //   child: ScrollDatePicker(
+          //     selectedDate: _selectedDate,
+          //     viewType: [DatePickerViewType.year,DatePickerViewType.month,DatePickerViewType.day,DatePickerViewType.hour],
+          //     locale: Locale('en'),
+          //     onDateTimeChanged: (DateTime value) {
+          //       setState(() {
+          //         _selectedDate = value;
+          //       });
+          //     },
+          //   ),
+          // ),
         ],
       ),
     );
