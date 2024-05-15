@@ -154,7 +154,7 @@ class _ScrollDateTimePickerState extends State<ScrollDateTimePicker> {
       mainAxisSize: MainAxisSize.min,
       children: [
         Container(
-          margin: EdgeInsets.only(bottom: 10),
+          margin: EdgeInsets.only(bottom: 10,top: 10),
           alignment: Alignment.center,
           child: Text(
             "${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}  ${_selectedDate.hour}:${_selectedDate.minute}:${_selectedDate.second}",
