@@ -150,58 +150,71 @@ class _ScrollDateTimePickerState extends State<ScrollDateTimePicker> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.center,
+    return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
-        Row(
-          mainAxisAlignment: widget.scrollViewOptions.mainAxisAlignment,
-          crossAxisAlignment: widget.scrollViewOptions.crossAxisAlignment,
-          children: _getScrollDateTimePicker(),
-        ),
-        // Date Picker Indicator
-        IgnorePointer(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        widget.options.backgroundColor,
-                        widget.options.backgroundColor.withOpacity(0.7),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              widget.indicator ??
-                  Container(
-                    height: widget.options.itemExtent,
-                    decoration: BoxDecoration(
-                      color: Colors.grey.withOpacity(0.15),
-                      borderRadius: const BorderRadius.all(Radius.circular(4)),
-                    ),
-                  ),
-              Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        widget.options.backgroundColor.withOpacity(0.7),
-                        widget.options.backgroundColor,
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
+        Container(
+          margin: EdgeInsets.only(bottom: 10),
+          alignment: Alignment.center,
+          child: Text(
+            "${_selectedDate.year}-${_selectedDate.month}-${_selectedDate.day}  ${_selectedDate.hour}:${_selectedDate.minute}:${_selectedDate.second}",
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
           ),
         ),
+        Expanded(child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Row(
+              mainAxisAlignment: widget.scrollViewOptions.mainAxisAlignment,
+              crossAxisAlignment: widget.scrollViewOptions.crossAxisAlignment,
+              children: _getScrollDateTimePicker(),
+            ),
+            // Date Picker Indicator
+            IgnorePointer(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            widget.options.backgroundColor,
+                            widget.options.backgroundColor.withOpacity(0.7),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  widget.indicator ??
+                      Container(
+                        height: widget.options.itemExtent,
+                        decoration: BoxDecoration(
+                          color: Colors.grey.withOpacity(0.15),
+                          borderRadius: const BorderRadius.all(Radius.circular(4)),
+                        ),
+                      ),
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            widget.options.backgroundColor.withOpacity(0.7),
+                            widget.options.backgroundColor,
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ))
       ],
     );
   }
